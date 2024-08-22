@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
  * @property string $currency_id,
  * @property Amount $amount,
  * @property int $payable_id,
+ * @property string $driver_payment_id,
  * @property string $payable_type,
  * @property int $payment_method_id
  */
@@ -32,6 +33,7 @@ class Payment extends Model
         'currency_id',
         'amount',
         'payable_id',
+        'driver_payment_id',
         'payable_type',
         'payment_method_id',
     ];

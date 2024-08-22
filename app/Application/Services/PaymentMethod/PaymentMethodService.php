@@ -2,7 +2,9 @@
 
 namespace App\Application\Services\PaymentMethod;
 
-use App\Domain\Models\PaymentMethod\Driver\PaymentDriver;
+use App\Application\Services\PaymentMethod\Driver\PaymentDriver;
+use App\Domain\Models\PaymentMethod\PaymentMethod;
+use App\Infrastructure\Repository\PaymentMethod\Factory\PaymentDriverFactory;
 use App\Infrastructure\Repository\PaymentMethod\PaymentMethodCrudContract;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;

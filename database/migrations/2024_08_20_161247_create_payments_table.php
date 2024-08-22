@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('currency_id')->references('id')->on('currencies');
             $table->decimal('amount', 10, 2);
             $table->morphs('payable');
+            $table->string('driver_payment_id')->nullable();
             $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods');
             $table->timestamps();
         });

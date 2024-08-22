@@ -70,19 +70,32 @@ readonly class PaymentController
             return response()->json(['error' => $e->getMessage()]);
         }
 
-        return response()->redirectTo('api/payment_methods/' . $payment->uuid . '/getDriver');
+        return response()->redirectTo('api/payment_methods/' . $payment->uuid . '/redirectPayment');
     }
 
-    public function complete(CompletePaymentRequest $request, string $uuid): PaymentResource|JsonResponse
+    public function success(string $uuid): JsonResponse
     {
-        $data = new CompletePaymentDTO(['payment_uuid' => $uuid, 'success' => $request->validated('success')]);
+        $data = new ShowPaymentDTO(['uuid' => $uuid]);
 
         try {
-            $payment = $this->paymentService->complete($data);
+            $payment = $this->paymentService->success($data);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
 
-        return new PaymentResource($payment);
+        return response()->json(['data' => $payment]);
+    }
+
+    public function failure(string $uuid): JsonResponse
+    {
+        $data = new ShowPaymentDTO(['uuid' => $uuid]);
+
+        try {
+            $payment = $this->paymentService->failure($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+
+        return response()->json(['data' => $payment]);
     }
 }

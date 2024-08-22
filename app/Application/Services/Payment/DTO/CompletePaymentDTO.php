@@ -2,7 +2,6 @@
 
 namespace App\Application\Services\Payment\DTO;
 
-use App\Domain\Models\PaymentMethod\Driver\PaymentDriver;
 use Spatie\DataTransferObject\DataTransferObject;
 
 class CompletePaymentDTO extends DataTransferObject

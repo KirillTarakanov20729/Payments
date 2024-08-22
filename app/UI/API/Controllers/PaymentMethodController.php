@@ -27,14 +27,27 @@ readonly class PaymentMethodController
         return PaymentMethodResource::collection($methods);
     }
 
-    public function getDriver(string $payment_uuid): JsonResponse|RedirectResponse
+    public function redirectPayment(string $payment_uuid): JsonResponse|RedirectResponse
     {
+        // Получаем класс нужного драйвера исходя из выбранного метода оплаты
         try {
             $payment_driver_class = $this->paymentMethodService->getDriver($payment_uuid);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
 
-        return response()->json(['driver' => $payment_driver_class->test(), 'payment_uuid' => $payment_uuid]);
+        // Создаем платеж в выбранной системе
+        try {
+            $payment = $payment_driver_class->createPayment($payment_uuid);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
+        }
+
+        // Редирект на страницу оплаты выбранного метода оплаты
+        try {
+            return response()->json(['data' => $payment_driver_class->redirect($payment)]);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
+        }
     }
 }

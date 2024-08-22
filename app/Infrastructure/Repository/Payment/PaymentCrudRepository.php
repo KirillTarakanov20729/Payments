@@ -67,7 +67,6 @@ class PaymentCrudRepository implements PaymentCrudContract
             $subscription->expiredAt = now()->addDays(30);
 
             return $subscription->save();
-
         } else {
             throw new \Exception('Payment has invalid payable type');
         }

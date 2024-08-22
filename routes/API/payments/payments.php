@@ -8,5 +8,7 @@ Route::prefix('payments')->group(function () {
     Route::get('/checkout/{uuid}', [\App\UI\API\Controllers\PaymentController::class, 'checkout']);
     Route::post('/choose/{uuid}', [\App\UI\API\Controllers\PaymentController::class, 'choosePaymentMethod']);
     Route::get('/process/{uuid}', [\App\UI\API\Controllers\PaymentController::class, 'process']);
-    Route::post('/complete/{uuid}', [\App\UI\API\Controllers\PaymentController::class, 'complete']);
+
+    Route::get('/success/{uuid}', [\App\UI\API\Controllers\PaymentController::class, 'success']);
+    Route::get('/failure/{uuid}', [\App\UI\API\Controllers\PaymentController::class, 'failure']);
 });

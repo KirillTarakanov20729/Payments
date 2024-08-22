@@ -98,12 +98,10 @@ readonly class PaymentService
         return $payment;
     }
 
-    public function complete(CompletePaymentDTO $data): Payment
+    public function success(ShowPaymentDTO $data): Payment
     {
-        $data_for_search = new ShowPaymentDTO(['uuid' => $data->payment_uuid]);
-
         try {
-            $payment = $this->paymentCrudRepository->show($data_for_search);
+            $payment = $this->paymentCrudRepository->show($data);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             throw $e;
@@ -113,45 +111,51 @@ readonly class PaymentService
             throw new \Exception('Payment not processing', 404);
         }
 
-        if ($data->success) {
-            $data_for_update = new UpdatePaymentStatusDTO(['payment' => $payment, 'status' => PaymentStatusEnum::success]);
+        $data_for_payable = new UpdatePayableStatusDTO(['payable_type' => $payment->payable_type, 'payable_id' => $payment->payable_id, 'status' => PayableStatusEnum::completed]);
 
-            $data_for_update_payable = new UpdatePayableStatusDTO([
-                'payable_type' => $payment->payable_type,
-                'payable_id' => $payment->payable_id,
-                'status' => PayableStatusEnum::completed]);
+        $data_for_payment = new UpdatePaymentStatusDTO(['payment' => $payment, 'status' => PaymentStatusEnum::success]);
 
-
-            DB::transaction( function () use ($data_for_update, $data_for_update_payable) {
-
-                try {
-                    $this->paymentCrudRepository->updatePayableStatus($data_for_update_payable);
-                } catch (\Exception $e) {
-                    Log::error($e->getMessage());
-                    throw $e;
-                }
-
-                try {
-                    $payment = $this->paymentCrudRepository->updatePaymentStatus($data_for_update);
-                } catch (\Exception $e) {
-                    Log::error($e->getMessage());
-                    throw $e;
-                }
-
-                return $payment;
-            });
-
-        } else {
-            $data_for_update = new UpdatePaymentStatusDTO(['payment' => $payment, 'status' => PaymentStatusEnum::failed]);
+        DB::transaction(function() use ($data_for_payable, $data_for_payment, &$payment) {
 
             try {
-                $payment = $this->paymentCrudRepository->updatePaymentStatus($data_for_update);
+                $success = $this->paymentCrudRepository->updatePayableStatus($data_for_payable);
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
                 throw $e;
             }
+
+            try {
+                $payment = $this->paymentCrudRepository->updatePaymentStatus($data_for_payment);
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+                throw $e;
+            }
+        });
+
+        return $payment;
+    }
+
+    public function failure(ShowPaymentDTO $data): Payment
+    {
+        try {
+            $payment = $this->paymentCrudRepository->show($data);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            throw $e;
         }
 
+        if ($payment->status != PaymentStatusEnum::processing) {
+            throw new \Exception('Payment not processing', 404);
+        }
+
+        $data = new UpdatePaymentStatusDTO(['payment' => $payment, 'status' => PaymentStatusEnum::failed]);
+
+        try {
+            $payment = $this->paymentCrudRepository->updatePaymentStatus($data);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            throw $e;
+        }
 
         return $payment;
     }

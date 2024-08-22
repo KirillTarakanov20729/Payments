@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Repository\PaymentMethod\Factory;
 
-use App\Domain\Models\PaymentMethod\Driver\PaymentDriver;
-use App\Domain\Models\PaymentMethod\Driver\TestDriver;
+use App\Application\Services\PaymentMethod\Driver\PaymentDriver;
+use App\Application\Services\PaymentMethod\Driver\TestDriver;
 use App\Domain\Models\PaymentMethod\Enum\PaymentDriverEnum;
 use InvalidArgumentException;
 

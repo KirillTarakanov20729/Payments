@@ -22,13 +22,13 @@ class PaymentMethodTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_get_driver_work(): void
+    public function test_payment_methods_redirectPayment_work(): void
     {
         $this->create_data();
 
         $payment = Payment::query()->first();
 
-        $response = $this->get('api/payment_methods/' . $payment->uuid . '/getDriver');
+        $response = $this->get('api/payment_methods/' . $payment->uuid . '/redirectPayment');
 
         $response->assertStatus(200);
     }
