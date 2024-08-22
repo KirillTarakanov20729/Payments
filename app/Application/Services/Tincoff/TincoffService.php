@@ -17,6 +17,11 @@ readonly class TincoffService
         return $this->data;
     }
 
+    public function getTerminalKey(): string
+    {
+        return $this->data->terminal;
+    }
+
     public function createPayment(CreateTincoffPaymentDTO $data)
     {
         $response = Http::post('https://securepay.tincoff.ru/v2/Init', [

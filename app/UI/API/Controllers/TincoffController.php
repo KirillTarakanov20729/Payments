@@ -27,7 +27,7 @@ readonly class TincoffController
     public function createPayment(CreateTincoffPaymentRequest $request): JsonResponse
     {
         $data = new CreateTincoffPaymentDTO([
-            'terminal' => $this->service->getConfig()['terminal'],
+            'terminal' => $this->service->getTerminalKey(),
             'amount' => $request->validated('amount'),
             'order' => $request->validated('order')]);
 

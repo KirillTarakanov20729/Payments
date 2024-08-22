@@ -3,6 +3,7 @@
 namespace App\UI\API\Requests\Tincoff;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CreateTincoffPaymentRequest extends FormRequest
 {
@@ -17,5 +18,12 @@ class CreateTincoffPaymentRequest extends FormRequest
             'order' => ['required', 'string'],
             'amount' => ['required', 'integer'],
         ];
+    }
+
+    protected function failedValidation($validator)
+    {
+        $errors = $validator->errors();
+
+        throw new HttpResponseException(response()->json(['errors' => $errors], 422));
     }
 }
