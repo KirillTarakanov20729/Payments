@@ -4,9 +4,7 @@ namespace App\UI\API\Controllers;
 
 use App\Application\Services\Payment\DTO\ShowPaymentDTO;
 use App\Application\Services\Payment\PaymentService;
-use App\Application\Services\Stripe\StripeService;
 use App\Domain\Models\Payment\Payment;
-use http\Client\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
