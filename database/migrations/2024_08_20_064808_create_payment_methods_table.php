@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->boolean('active')->default(false);
             $table->string('driver');
+            $table->string('currency_id');
+            $table->foreign('currency_id')->references('id')->on('currencies');
         });
     }
 

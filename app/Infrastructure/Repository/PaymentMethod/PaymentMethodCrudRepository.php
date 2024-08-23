@@ -21,6 +21,7 @@ class PaymentMethodCrudRepository implements PaymentMethodCrudContract
         return (new PaymentDriverFactory())->make($paymentDriver);
     }
 
+
     public function getPayment(string $payment_uuid): Payment
     {
         $payment = Payment::query()->where('uuid', $payment_uuid)->first();

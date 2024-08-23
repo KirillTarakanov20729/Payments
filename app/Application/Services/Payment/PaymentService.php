@@ -4,6 +4,7 @@ namespace App\Application\Services\Payment;
 
 use App\Application\Services\Payment\DTO\ChoosePaymentMethodDTO;
 use App\Application\Services\Payment\DTO\CompletePaymentDTO;
+use App\Application\Services\Payment\DTO\GetPaymentMethodDTO;
 use App\Application\Services\Payment\DTO\IndexPaymentDTO;
 use App\Application\Services\Payment\DTO\ShowPaymentDTO;
 use App\Application\Services\Payment\DTO\UpdatePayableStatusDTO;
@@ -61,6 +62,12 @@ readonly class PaymentService
 
         if ($payment->status != PaymentStatusEnum::pending) {
             throw new \Exception('Payment not pending', 404);
+        }
+
+        $payment_method = $this->paymentCrudRepository->getPaymentMethod(new GetPaymentMethodDTO(['payment_method_id' => $data->payment_method_id]));
+
+        if ($payment_method->currency_id != $payment->currency_id) {
+            throw new \Exception('This payment method is not available for this currency', 404);
         }
 
         $data = new UpdatePaymentMethodDTO(['payment' => $payment, 'payment_method_id' => $data->payment_method_id]);

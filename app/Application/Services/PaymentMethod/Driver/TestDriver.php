@@ -20,6 +20,11 @@ class TestDriver extends PaymentDriver
 
     public function redirect(Payment $payment): string
     {
-        return 'Redirect test payment, payment_uuid: ' . $payment->uuid . ', driver_payment_id: ' . $payment->driver_payment_id;
+        return match ($payment->currency_id) {
+            'RUB' => "Return URL for RUB payment with payment_uuid: {$payment->uuid}, driver_payment_id: {$payment->driver_payment_id}",
+            'USD' => "Return URL for USD payment with payment_uuid: {$payment->uuid}, driver_payment_id: {$payment->driver_payment_id}",
+            'EUR' => "Return URL for EUR payment with payment_uuid: {$payment->uuid}, driver_payment_id: {$payment->driver_payment_id}",
+            default => throw new \Exception('Unsupported currency')
+        };
     }
 }

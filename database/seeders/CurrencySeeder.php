@@ -13,6 +13,7 @@ class CurrencySeeder extends Seeder
     public function run(): void
     {
         $this->create_rub();
+        $this->create_usd();
     }
 
     private function create_rub(): void
@@ -21,6 +22,15 @@ class CurrencySeeder extends Seeder
             'id' => 'RUB'
         ], [
             'name' => 'Russian Ruble',
+        ]);
+    }
+
+    private function create_usd(): void
+    {
+        Currency::query()->firstOrCreate([
+            'id' => 'USD'
+        ], [
+            'name' => 'US Dollar',
         ]);
     }
 }

@@ -91,6 +91,7 @@ trait TestTrait
         $payment_method_one->name = "test";
         $payment_method_one->driver = PaymentDriverEnum::test;
         $payment_method_one->active = true;
+        $payment_method_one->currency_id = "RUB";
         $payment_method_one->save();
     }
 

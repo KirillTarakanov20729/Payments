@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Repository\Payment;
 
 use App\Application\Services\Payment\DTO\ChoosePaymentMethodDTO;
+use App\Application\Services\Payment\DTO\GetPaymentMethodDTO;
 use App\Application\Services\Payment\DTO\IndexPaymentDTO;
 use App\Application\Services\Payment\DTO\ShowPaymentDTO;
 use App\Application\Services\Payment\DTO\UpdatePayableStatusDTO;
@@ -30,6 +31,11 @@ class PaymentCrudRepository implements PaymentCrudContract
         }
 
         return $payment;
+    }
+
+    public function getPaymentMethod(GetPaymentMethodDTO $data): PaymentMethod
+    {
+        return PaymentMethod::query()->find($data->payment_method_id);
     }
 
     public function updatePaymentMethod(UpdatePaymentMethodDTO $data): Payment
