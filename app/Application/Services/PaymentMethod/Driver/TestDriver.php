@@ -2,6 +2,7 @@
 
 namespace App\Application\Services\PaymentMethod\Driver;
 
+use App\Application\Services\PaymentMethod\DTO\RedirectPaymentDTO;
 use App\Domain\Models\Payment\Payment;
 
 class TestDriver extends PaymentDriver
@@ -18,13 +19,16 @@ class TestDriver extends PaymentDriver
         return $payment;
     }
 
-    public function redirect(Payment $payment): string
+    public function redirect(Payment $payment): RedirectPaymentDTO
     {
-        return match ($payment->currency_id) {
-            'RUB' => "Return URL for RUB payment with payment_uuid: {$payment->uuid}, driver_payment_id: {$payment->driver_payment_id}",
-            'USD' => "Return URL for USD payment with payment_uuid: {$payment->uuid}, driver_payment_id: {$payment->driver_payment_id}",
-            'EUR' => "Return URL for EUR payment with payment_uuid: {$payment->uuid}, driver_payment_id: {$payment->driver_payment_id}",
-            default => throw new \Exception('Unsupported currency')
+        $data = new RedirectPaymentDTO(['payment_uuid' => $payment->uuid, 'driver_payment_uuid' => $payment->driver_payment_id, 'url' => '']);
+
+        match ($payment->paymentMethod->currency_id) {
+            'USD' => $data->url = 'https://response_for_usd.com',
+            'RUB' => $data->url = 'https://response_for_rub.com',
+            default => throw new \Exception('Invalid currency'),
         };
+
+        return $data;
     }
 }

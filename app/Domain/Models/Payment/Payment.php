@@ -18,7 +18,7 @@ use Illuminate\Support\Str;
  * @property string $uuid,
  * @property PaymentStatusEnum $status,
  * @property string $currency_id,
- * @property Amount $amount,
+ * @property string $amount,
  * @property int $payable_id,
  * @property string $driver_payment_id,
  * @property string $payable_type,

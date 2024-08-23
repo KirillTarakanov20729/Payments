@@ -75,27 +75,11 @@ readonly class PaymentController
 
     public function success(string $uuid): JsonResponse
     {
-        $data = new ShowPaymentDTO(['uuid' => $uuid]);
-
-        try {
-            $payment = $this->paymentService->success($data);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()]);
-        }
-
-        return response()->json(['data' => $payment]);
+        return response()->json(['data' => 'Платеж успешно завершен. Ожидайте изменения в БД']);
     }
 
     public function failure(string $uuid): JsonResponse
     {
-        $data = new ShowPaymentDTO(['uuid' => $uuid]);
-
-        try {
-            $payment = $this->paymentService->failure($data);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()]);
-        }
-
-        return response()->json(['data' => $payment]);
+        return response()->json(['data' => 'Платеж отменен. Ожидайте изменения в БД']);
     }
 }

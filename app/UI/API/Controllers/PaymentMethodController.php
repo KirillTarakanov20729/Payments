@@ -45,7 +45,8 @@ readonly class PaymentMethodController
 
         // Редирект на страницу оплаты выбранного метода оплаты
         try {
-            return response()->json(['data' => $payment_driver_class->redirect($payment)]);
+            $data = $payment_driver_class->redirect($payment);
+            return response()->json(['data' => $data], 200);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
